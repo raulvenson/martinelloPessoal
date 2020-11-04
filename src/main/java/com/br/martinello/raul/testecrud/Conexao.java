@@ -1,5 +1,5 @@
 
-package com.mycompany.mavenproject1;
+package com.br.martinello.raul.testecrud;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

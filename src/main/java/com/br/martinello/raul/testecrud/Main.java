@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.mavenproject1;
+package com.br.martinello.raul.testecrud;
 
 /**
  *
@@ -11,13 +11,16 @@ package com.mycompany.mavenproject1;
  */
 public class Main {
     public static void main(String[] args) {
+        
+        //Esse main não serve pra mais nada, tudo pelo jform
+        
         TestDAO testeDao = new TestDAO();
         
         Teste teste = new Teste();
         teste.setNomeEstado("Mato Grosso");
         teste.setRegiaoEstado("Centro-Oeste");
         
-        testeDao.delete(teste);
+//        testeDao.save(teste);
         
     }
     
