@@ -5,10 +5,13 @@
  */
 package com.br.martinello.raul.testecrud;
 
-import java.awt.List;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -54,16 +57,32 @@ public class TestDAO {
         
         Connection conn = Conexao.getConexao();
         PreparedStatement pstm = null;
+        ResultSet rs = null;
         String sql = "SELECT * FROM estados";
+        
+        List<Teste> estados = new ArrayList<>();
 
         try {
             pstm = (PreparedStatement) conn.prepareStatement(sql);
-            pstm.executeQuery();
+            rs = pstm.executeQuery();
+            
+            while(rs.next()){
+                Teste teste = new Teste();
+                teste.setCodEstado(rs.getInt("cod_estado"));
+                teste.setNomeEstado(rs.getString("nome_estado"));
+                teste.setRegiaoEstado(rs.getString("regiao_estado"));
+                estados.add(teste);
+            }
             
         } catch (SQLException ex) {
             Logger.getLogger(TestDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Conexao.closeConnection(conn, pstm, rs);
         }
-
+        
+        
+        return estados;
+        
     }
 
     public void update(Teste teste) {
