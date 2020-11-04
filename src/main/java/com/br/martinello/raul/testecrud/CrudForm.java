@@ -103,10 +103,7 @@ public class CrudForm extends javax.swing.JFrame {
 
         jTableEstados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "Estado", "Região"
