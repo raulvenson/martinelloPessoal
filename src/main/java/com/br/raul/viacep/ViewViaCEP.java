@@ -5,7 +5,16 @@
  */
 package com.br.raul.viacep;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import org.json.JSONObject;
 
 /**
  *
@@ -146,18 +155,67 @@ public class ViewViaCEP extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
-        ViaCEP viaCep = new ViaCEP();
-        
-            viaCep.buscar(txtCEP.getText());
-            
-            txtCidade.setText(viaCep.getCidade());
-            txtUF.setText(viaCep.getUF());
-            txtBairro.setText(viaCep.getBairro());
-            txtRua.setText(viaCep.getRua());
+
+
+        CEP viaCep = buscar(txtCEP.getText());
+
+        txtCidade.setText(viaCep.getCidade());
+        txtUF.setText(viaCep.getUF());
+        txtBairro.setText(viaCep.getBairro());
+        txtRua.setText(viaCep.getRua());
 //            txtCEP.setText("");
-            
+
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    public CEP buscar(String cep) {
+
+        String url = "http://viacep.com.br/ws/" + cep + "/json/";
+
+        JSONObject obj;
+        
+        CEP novoCep = new CEP();
+        try {
+            obj = new JSONObject(getHttpGET(url));
+//            CEP novoCEP = new CEP(obj.getString("cep"),
+//                    obj.getString("logradouro"),
+//                    obj.getString("complemento"),
+//                    obj.getString("bairro"),
+//                    obj.getString("localidade"),
+//                    obj.getString("uf"),
+//                    obj.getString("ibge"),
+//                    obj.getString("gia"));
+            novoCep.setCEP(obj.getString("cep"));
+            novoCep.setRua(obj.getString("logradouro"));
+            novoCep.setCidade(obj.getString("localidade"));
+            novoCep.setUF(obj.getString("uf"));
+            novoCep.setBairro(obj.getString("bairro"));
+
+//            CEPs.add(novoCep);
+//
+//            index = CEPs.size() - 1;
+        } catch (IOException ex) {
+            Logger.getLogger(ViaCEP.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+            return novoCep;
+
+    }
+
+    public final String getHttpGET(String urlToRead) throws MalformedURLException, IOException {
+        StringBuilder result = new StringBuilder();
+
+        URL url = new URL(urlToRead);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+
+        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        String line;
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
+        }
+
+        return result.toString();
+    }
 
     /**
      * @param args the command line arguments

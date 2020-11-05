@@ -32,16 +32,22 @@ public class ViaCEP extends ViaCEPBase {
         JSONObject obj;
         try {
             obj = new JSONObject(getHttpGET(url));
-            CEP novoCEP = new CEP(obj.getString("cep"),
-                    obj.getString("logradouro"),
-                    obj.getString("complemento"),
-                    obj.getString("bairro"),
-                    obj.getString("localidade"),
-                    obj.getString("uf"),
-                    obj.getString("ibge"),
-                    obj.getString("gia"));
+//            CEP novoCEP = new CEP(obj.getString("cep"),
+//                    obj.getString("logradouro"),
+//                    obj.getString("complemento"),
+//                    obj.getString("bairro"),
+//                    obj.getString("localidade"),
+//                    obj.getString("uf"),
+//                    obj.getString("ibge"),
+//                    obj.getString("gia"));
+           CEP novoCep = new CEP();
+           novoCep.setCEP(obj.getString("cep"));
+           novoCep.setRua(obj.getString("logradouro"));
+           novoCep.setCEP(obj.getString("cep"));
 
-            CEPs.add(novoCEP);
+
+
+            CEPs.add(novoCep);
 
             index = CEPs.size() - 1;
         } catch (IOException ex) {
