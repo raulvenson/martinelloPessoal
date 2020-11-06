@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -86,23 +87,25 @@ public class TestDAO {
     }
 
     public void update(Teste teste) {
-        String sql = "update estados set nome_estado = ?, regiao_estado = ?";
+        String sql = "update estados set nome_estado = ?, regiao_estado = ? WHERE cod_estado = ?";
 
-        Connection conn = null;
+        Connection conn = Conexao.getConexao();
         PreparedStatement pstm = null;
 
         try {
-            conn = Conexao.getConexao();
 
             pstm = (PreparedStatement) conn.prepareStatement(sql);
 
             pstm.setString(1, teste.getNomeEstado());
             pstm.setString(2, teste.getRegiaoEstado());
+            pstm.setInt(3, teste.getCodEstado());
 
-            pstm.execute();
+            pstm.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Atualizado com sucesso");
 
         } catch (Exception e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao atualizar: " + e);
         } finally {
             try {
                 if (pstm != null) {
@@ -118,7 +121,7 @@ public class TestDAO {
     }
 
     public void delete(Teste teste) {
-        String sql = "delete estados where nome_estado = ? and regiao_estado = ?";
+        String sql = "delete from estados where cod_estado = ?";
 
         Connection conn = null;
         PreparedStatement pstm = null;
@@ -128,13 +131,15 @@ public class TestDAO {
 
             pstm = (PreparedStatement) conn.prepareStatement(sql);
 
-            pstm.setString(1, teste.getNomeEstado());
-            pstm.setString(2, teste.getRegiaoEstado());
+            pstm.setInt(1, teste.getCodEstado());
 
-            pstm.execute();
+            pstm.executeUpdate();
+            
+            JOptionPane.showMessageDialog(null, "Excluido com sucesso!");
+            
 
         } catch (Exception e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Erro ao excluir!");
         } finally {
             try {
                 if (pstm != null) {

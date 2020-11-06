@@ -5,8 +5,8 @@
  */
 package com.br.martinello.raul.testecrud;
 
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -18,35 +18,33 @@ public class CrudForm extends javax.swing.JFrame {
      * Creates new form CrudForm
      */
     public CrudForm() {
-        
+
         initComponents();
-        
+
         readJTable();
-        
+
     }
-    
-     TestDAO testeDao = new TestDAO();
-        
-        Teste teste = new Teste();
-        
+
+    TestDAO testeDao = new TestDAO();
+
+    Teste teste = new Teste();
+
 //        teste.setNomeEstado("Mato Grosso");
 //        teste.setRegiaoEstado("Centro-Oeste");
-        
-        //testeDao.delete(teste); BOTÃO ACTION
-        
-    public void readJTable(){
+    //testeDao.delete(teste); BOTÃO ACTION
+    public void readJTable() {
         DefaultTableModel dtmEstados = (DefaultTableModel) jTableEstados.getModel();
         dtmEstados.setNumRows(0);
-        TestDAO tdao = new  TestDAO();
-        
+        TestDAO tdao = new TestDAO();
+
         for (Teste t : tdao.read()) {
-            
-            dtmEstados.addRow(new Object[] {
+
+            dtmEstados.addRow(new Object[]{
                 t.getCodEstado(),
                 t.getNomeEstado(),
                 t.getRegiaoEstado()
             });
-            
+
         }
     }
 
@@ -65,6 +63,8 @@ public class CrudForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableEstados = new javax.swing.JTable();
@@ -81,10 +81,24 @@ public class CrudForm extends javax.swing.JFrame {
 
         jLabel2.setText("Região:");
 
-        jButton1.setText("Adicionar");
+        jButton1.setText("Incluir");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Remover");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Atualizar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
             }
         });
 
@@ -97,10 +111,15 @@ public class CrudForm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                         .addComponent(jLabel2)
-                        .addComponent(jTextFieldRegiao, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextFieldRegiao, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jButton1)
+                            .addGap(18, 18, 18)
+                            .addComponent(jButton3)
+                            .addGap(18, 18, 18)
+                            .addComponent(jButton2)))
                     .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jTextFieldEstado, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.CENTER))
+                    .addComponent(jTextFieldEstado, javax.swing.GroupLayout.Alignment.CENTER, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -115,8 +134,11 @@ public class CrudForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextFieldRegiao, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         jTableEstados.setModel(new javax.swing.table.DefaultTableModel(
@@ -135,6 +157,16 @@ public class CrudForm extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        jTableEstados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableEstadosMouseClicked(evt);
+            }
+        });
+        jTableEstados.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTableEstadosKeyReleased(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableEstados);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -147,7 +179,7 @@ public class CrudForm extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -180,26 +212,77 @@ public class CrudForm extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        
+
         teste.setNomeEstado(jTextFieldEstado.getText());
         teste.setRegiaoEstado(jTextFieldRegiao.getText());
-        
-        System.out.println("Estado: " + jTextFieldEstado.getText());
-        System.out.println("Região: " + jTextFieldRegiao.getText());
-        
+
         testeDao.save(teste);
-        
-        DefaultTableModel dtmEstados = (DefaultTableModel) jTableEstados.getModel();
-        Object[] dados = {jTextFieldEstado.getText(), jTextFieldRegiao.getText()};
-        dtmEstados.addRow(dados);
-        
-        
+
         jTextFieldEstado.setText("");
         jTextFieldRegiao.setText("");
-        
+
         readJTable();
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+
+        if (jTableEstados.getSelectedRow() != -1) {
+            
+            teste.setCodEstado((int) jTableEstados.getValueAt(jTableEstados.getSelectedRow(), 0));
+            testeDao.delete(teste);
+
+            jTextFieldEstado.setText("");
+            jTextFieldRegiao.setText("");
+
+            readJTable();
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione uma linha para excluir");
+        }
+
+
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+
+        if (jTableEstados.getSelectedRow() != -1) {
+
+            teste.setNomeEstado(jTextFieldEstado.getText());
+            teste.setRegiaoEstado(jTextFieldRegiao.getText());
+
+            teste.setCodEstado((int) jTableEstados.getValueAt(jTableEstados.getSelectedRow(), 0));
+            testeDao.update(teste);
+
+            jTextFieldEstado.setText("");
+            jTextFieldRegiao.setText("");
+
+            readJTable();
+
+        }
+
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTableEstadosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableEstadosMouseClicked
+        // TODO add your handling code here:
+
+        if (jTableEstados.getSelectedRow() != -1) {
+            jTextFieldEstado.setText(jTableEstados.getValueAt(jTableEstados.getSelectedRow(), 1).toString());
+            jTextFieldRegiao.setText(jTableEstados.getValueAt(jTableEstados.getSelectedRow(), 2).toString());
+        }
+
+    }//GEN-LAST:event_jTableEstadosMouseClicked
+
+    private void jTableEstadosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTableEstadosKeyReleased
+        // TODO add your handling code here:
+
+        if (jTableEstados.getSelectedRow() != -1) {
+            jTextFieldEstado.setText(jTableEstados.getValueAt(jTableEstados.getSelectedRow(), 1).toString());
+            jTextFieldRegiao.setText(jTableEstados.getValueAt(jTableEstados.getSelectedRow(), 2).toString());
+        }
+    }//GEN-LAST:event_jTableEstadosKeyReleased
 
     /**
      * @param args the command line arguments
@@ -210,11 +293,7 @@ public class CrudForm extends javax.swing.JFrame {
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-   
-        
-       
-        
-        
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -239,10 +318,13 @@ public class CrudForm extends javax.swing.JFrame {
                 new CrudForm().setVisible(true);
             }
         });
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
